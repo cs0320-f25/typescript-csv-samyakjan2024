@@ -27,6 +27,8 @@ test("parseCSV yields arrays", async () => {
   expect(results[4]).toEqual(["Nim", "22"]);
 });
 
+// this test tests data validatio such as if thirty can be converted to 30
+
 test("parseCSV yields data", async () => {
   const results = await parseCSV(PEOPLE_CSV_PATH)
   
@@ -90,10 +92,10 @@ test("parseCSV preserves leading/trailing spaces", async () => {
   ]);
 });
 
+// this test checks that empty fields are handled correctly
+
 test("parseCSV handles empty fields", async () => {
-  const csv = 'name,age\nAlice,\n,Bob\nCharlie,25';
-  const filePath = writeTempCSV(csv);
-  const results = await parseCSV(filePath);
+  const results = await parseCSV(path.join(__dirname, "../data/empty_fields.csv"));
   expect(results).toEqual([
     ["name", "age"],
     ["Alice", ""],
