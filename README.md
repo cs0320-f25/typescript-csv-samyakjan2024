@@ -78,3 +78,4 @@ Copilot: generating tests and understanding test format
 
 #### Total estimated time it took to complete project: 8 hours
 #### Link to GitHub Repo:  https://github.com/cs0320-f25/typescript-csv-samyakjan2024.git
+### Link to google docs with co-pilot history: https://docs.google.com/document/d/1mc7KqoO-Cqv2vmIed4ElZdcwA_e_0gql1Jak7J_Rza8/edit?usp=sharing 

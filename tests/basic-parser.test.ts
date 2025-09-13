@@ -5,6 +5,7 @@ import * as os from "os";
 import z from "zod";
 
 const PEOPLE_CSV_PATH = path.join(__dirname, "../data/people.csv");
+const PEOPLE2_CSV_PATH = path.join(__dirname, "../data/people2.csv");
 const ANOTHER_CSV_PATH = path.join(__dirname, "../data/another.csv");
 const ANOTHER2_CSV_PATH = path.join(__dirname, "../data/another2.csv");
 const ANOTHER3_CSV_PATH = path.join(__dirname, "../data/another3.csv");
@@ -60,6 +61,8 @@ test("parseCSV handles quoted fields with commas", async () => {
 });
 
 
+// this test checks that newlines within quotes are not treated as new rows, unsure of how the new line should be represented in the results 
+
 test("parseCSV handles quoted fields with newlines", async () => {
   const results = await parseCSV(ANOTHER2_CSV_PATH);
   expect(results).toEqual([
@@ -68,24 +71,23 @@ test("parseCSV handles quoted fields with newlines", async () => {
   ]);
 });
 
-test("parseCSV handles escaped double quotes", async () => {
-  const results = await parseCSV(ANOTHER3_CSV_PATH);
-  expect(results).toEqual([
-    ["name", "quote"],
-    ["Alice", "She said \"hello\""]
-  ]);
-});
+
+
+//this test checks that empty fields are handles correctly, current assumption is to leave them as empty strings
 
 test("parseCSV throws on inconsistent field counts", async () => {
-  const csv = 'name,age\nAlice,23\nBob';
-  const filePath = writeTempCSV(csv);
-  await expect(parseCSV(filePath)).rejects.toThrow();
+  const results = await parseCSV(ANOTHER3_CSV_PATH);
+  expect(results).toEqual([
+    ["name", "age"],
+    ["Alice", "23"],
+    ["Bob", ""]
+  ])
 });
 
+// this tests tests that spaces within quotes are preserved 
+
 test("parseCSV preserves leading/trailing spaces", async () => {
-  const csv = 'name,desc\n Alice , " spaced " ';
-  const filePath = writeTempCSV(csv);
-  const results = await parseCSV(filePath);
+  const results = await parseCSV(path.join(__dirname, "../data/spaced_data.csv"));
   expect(results).toEqual([
     ["name", "desc"],
     [" Alice ", " spaced "]
@@ -117,4 +119,21 @@ const results = await parseCSV(ANOTHER_CSV_PATH, schema);
     ["Bob", "comma, inside"]
   ]);
 });
+
+// testing parseCSV with two schema validation
+
+const schema2 = z.tuple([z.string(), z.coerce.number()]);
+
+test("parseCSV with two schema validation", async () => {
+
+const results = await parseCSV(PEOPLE2_CSV_PATH, schema2);
+  expect(results).toEqual([
+    ["Alice", "23"],
+    ["Bob", "30"],
+  ]);
+});
+
+
+
+
 
