@@ -49,13 +49,22 @@ Do you want automatic type coercion (e.g., "30" → number 30) or leave all fiel
 ### 1340 Supplement
 
 - #### 1. Correctness
+The tests should be checking that the data that is being given to the parser is output completely (ie the parser does not delete any data). The tests should also check that the parser and the Zod library do not hallucinate -- this could mean that the coerce function does not produce output that is completely irrelevant to the input. 
 
 - #### 2. Random, On-Demand Generation
+By generating random CSV data, we can understand the different situations and circumstances in which users might use the parser. By testing this data with our parser, we can identify short comings and bugs in the situation and attempt to remedy it. This allows testing to go beyond self-generated files which may not be able to embody all potential problems.  
 
 - #### 3. Overall experience, Bugs encountered and resolved
-#### Errors/Bugs:
-#### Tests:
-#### How To…
+
+#### Errors/Bugs: 
+I faced bugs when trying to decided the return type for the CSVParser() function as I intended to make it return a z.infer type. However I realised that this would require typecasting and thus changed it to return ZodSafeParseResult<T>[].
+
+#### Tests: 
+For tests, the descriptions above the tests in the basic-parser.test.ts file indicates what edge cases it intends to test
+
+
+#### How To: 
+The CSV files for tests are already created, the tests can be run on the appropriate files (the path is already coded in). Some tests take in both a schema and CSV path and can thus be tested on CSV files which a different desired schema. 
 
 #### Team members and contributions (include cs logins):
 
@@ -67,5 +76,5 @@ jgcasale:CSVParser logic
 
 Copilot: generating tests and understanding test format 
 
-#### Total estimated time it took to complete project:
-#### Link to GitHub Repo:  
+#### Total estimated time it took to complete project: 8 hours
+#### Link to GitHub Repo:  https://github.com/cs0320-f25/typescript-csv-samyakjan2024.git
